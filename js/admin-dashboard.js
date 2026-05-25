@@ -1,4 +1,4 @@
-let recentOrders = [];
+﻿let recentOrders = [];
 let currentPage = 1;
 const ordersPerPage = 10;
 let showAllRecentOrders = false;
@@ -293,7 +293,7 @@ function toggleSidebar() {
 
 function logout() {
   auth.logout();
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 // Load admin profile info
@@ -326,7 +326,7 @@ async function loadAdminProfileInfo() {
 
 function requireAdminAuth() {
   if (!auth.isLoggedIn()) {
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return false;
   }
 
@@ -334,7 +334,7 @@ function requireAdminAuth() {
   if (!user || user.role !== "admin") {
     alert("Please login as admin");
     auth.logout();
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return false;
   }
   return true;

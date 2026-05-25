@@ -1,4 +1,4 @@
-let orders = [];
+﻿let orders = [];
 let currentOrderId = null;
 let currentPage = 1;
 const ordersPerPage = 10;
@@ -7,7 +7,7 @@ let notificationRefreshTimer = null;
 
 function logout() {
   auth.logout();
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 function requireAdminAuth() {
@@ -367,7 +367,7 @@ function toggleSidebar() {
 }
 
 function logout() {
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 document.addEventListener("DOMContentLoaded", () => {

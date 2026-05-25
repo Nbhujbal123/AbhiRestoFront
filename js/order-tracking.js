@@ -1,4 +1,4 @@
-// Order tracking page - fetches orders from backend
+﻿// Order tracking page - fetches orders from backend
 let userOrders = [];
 let refreshInterval;
 
@@ -59,7 +59,7 @@ function getProgressWidth(status) {
 // Fetch orders from backend
 async function fetchOrders() {
   if (!auth.isLoggedIn()) {
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return;
   }
 

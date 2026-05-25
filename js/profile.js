@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+﻿document.addEventListener("DOMContentLoaded", () => {
   const tabs = document.querySelectorAll(".side-menu-link[data-tab]");
   const views = document.querySelectorAll(".tab-view");
 
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadUserProfile() {
   if (!auth.isLoggedIn()) {
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return;
   }
 
@@ -177,6 +177,6 @@ function toggleDetails(id) {
 function logout() {
   if (confirm("Are you sure you want to sign out?")) {
     auth.logout();
-    window.location.href = "login.html";
+    window.location.href = "index.html";
   }
 }

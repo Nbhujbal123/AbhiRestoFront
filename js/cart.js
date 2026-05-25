@@ -1,4 +1,4 @@
-const DELIVERY_CHARGE = 30;
+﻿const DELIVERY_CHARGE = 30;
 const TAX_RATE = 0.05;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -81,7 +81,7 @@ function generateOrderId() {
 async function handlePlaceOrder() {
   if (!auth.isLoggedIn()) {
     alert("Please sign in to your RestoM account to complete your order.");
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return;
   }
 

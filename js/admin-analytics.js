@@ -1,6 +1,6 @@
-function logout() {
+﻿function logout() {
   auth.logout();
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 let supportNotifications = [];
@@ -87,7 +87,7 @@ function requireAdminAuth() {
 
 document.addEventListener("DOMContentLoaded", () => {
   if (!requireAdminAuth()) {
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return;
   }
 

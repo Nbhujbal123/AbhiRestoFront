@@ -1,4 +1,4 @@
-// Admin Profile JavaScript
+﻿// Admin Profile JavaScript
 
 // Toggle password visibility
 function togglePassword(inputId) {
@@ -43,7 +43,7 @@ function toggleSidebar() {
 // Logout function
 function logout() {
   auth.logout();
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 // Load admin profile data
@@ -256,7 +256,7 @@ function setupProfileDropdown() {
 // Check authentication
 function requireAdminAuth() {
   if (!auth.isLoggedIn()) {
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return false;
   }
 
@@ -264,7 +264,7 @@ function requireAdminAuth() {
   if (!user || user.role !== "admin") {
     alert("Please login as admin");
     auth.logout();
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return false;
   }
   return true;

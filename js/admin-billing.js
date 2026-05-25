@@ -1,4 +1,4 @@
-let allBills = [];
+﻿let allBills = [];
 let currentFilter = "all";
 let currentViewedBillId = null;
 let currentPage = 1;
@@ -8,7 +8,7 @@ let notificationRefreshTimer = null;
 
 function logout() {
   auth.logout();
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 function requireAdminAuth() {
@@ -92,7 +92,7 @@ async function dismissNotification(messageId, event) {
 
 document.addEventListener("DOMContentLoaded", () => {
   if (!requireAdminAuth()) {
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return;
   }
 

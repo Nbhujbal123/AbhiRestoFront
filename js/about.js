@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+﻿document.addEventListener("DOMContentLoaded", function () {
   const authSlot = document.getElementById("authButtons");
   if (typeof auth !== "undefined" && auth.isAuthenticated()) {
     const user = auth.getUser();

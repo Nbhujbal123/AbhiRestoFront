@@ -1,4 +1,4 @@
-let allMenuItems = [];
+﻿let allMenuItems = [];
 let allCategories = [];
 let currentImageBase64 = "";
 let currentPage = 1;
@@ -96,7 +96,7 @@ function resolveImageUrl(imageUrl) {
 function requireAdminAuth() {
   if (!auth.isLoggedIn()) {
     alert("Please login as admin");
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return false;
   }
   return true;
@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const user = auth.getUser();
   if (!user || user.role !== "admin") {
     alert("Please login as admin to access this page");
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return;
   }
 
@@ -457,7 +457,7 @@ function toggleSidebar() {
 
 function logout() {
   auth.logout();
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 function filterMenuItems() {

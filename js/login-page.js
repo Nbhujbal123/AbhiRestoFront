@@ -3,14 +3,16 @@ document.addEventListener("DOMContentLoaded", () => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
   }
 
+  let loginEmailForOtp = "";
+
   const loginForm = document.getElementById("loginForm");
 
   if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const email = loginForm.querySelector('input[type="email"]').value.trim();
-      const password = loginForm.querySelector('input[type="password"]').value;
+      const email = (document.getElementById("loginEmail")?.value || "").trim();
+      const password = document.getElementById("loginPassword")?.value || "";
 
       if (!isValidEmail(email)) {
         alert("Please enter a valid email address");
@@ -18,25 +20,109 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        const response = await auth.login({ email, password });
-        const user = auth.getUser();
-        // Check if user is admin and redirect accordingly
-        if (user && user.role === "admin") {
-          window.location.href = "admin-dashboard.html";
+        const response = await fetch(`${API_BASE_URL}/auth/login/send-otp`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          loginEmailForOtp = email;
+          document.getElementById("loginStep1").style.display = "none";
+          document.getElementById("loginOtpStep").style.display = "block";
+          alert("OTP sent to your email! Check your inbox.");
         } else {
-          window.location.href = "index.html";
+          alert(data.message || "Login failed");
         }
       } catch (error) {
-        alert(error.message || "Login failed");
+        alert(error.message || "Login failed. Please try again.");
       }
     });
   }
+
+  window.verifyLoginOTP = async function () {
+    const otp = (document.getElementById("loginOtp")?.value || "").trim();
+
+    if (!otp || otp.length !== 6) {
+      alert("Please enter a valid 6-digit OTP");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/login/verify-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: loginEmailForOtp, otp }),
+      });
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        if (data.data?.access_token && typeof auth !== "undefined") {
+          auth.setSession(
+            data.data.user,
+            data.data.access_token,
+            data.data.refresh_token,
+          );
+        }
+        const user = data.data?.user;
+        if (user && user.role === "admin") {
+          window.location.href = "admin-dashboard.html";
+        } else {
+          window.location.href = "home.html";
+        }
+      } else {
+        alert(data.message || "Invalid OTP");
+      }
+    } catch (error) {
+      alert(error.message || "Verification failed. Please try again.");
+    }
+  };
+
+  window.resendLoginOTP = async function () {
+    const passwordField = document.getElementById("loginPassword");
+    const password = passwordField?.value || "";
+
+    if (!loginEmailForOtp || !password) {
+      document.getElementById("loginStep1").style.display = "block";
+      document.getElementById("loginOtpStep").style.display = "none";
+      alert("Please enter your credentials again.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/login/send-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: loginEmailForOtp, password }),
+      });
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        alert("OTP resent to your email!");
+      } else {
+        alert(data.message || "Failed to resend OTP");
+      }
+    } catch (error) {
+      alert(error.message || "Failed to resend OTP. Please try again.");
+    }
+  };
+
+  window.resetLoginOtpStep = function () {
+    loginEmailForOtp = "";
+    const step1 = document.getElementById("loginStep1");
+    const otpStep = document.getElementById("loginOtpStep");
+    if (step1) step1.style.display = "block";
+    if (otpStep) otpStep.style.display = "none";
+    const otpInput = document.getElementById("loginOtp");
+    if (otpInput) otpInput.value = "";
+  };
 
   window.attachRegisterFormHandler = function () {
     const registerForm = document.getElementById("registerForm");
     if (!registerForm || registerForm.dataset.bound === "1") return;
 
-    // OTP flow is handled inline in login.html (user-requested HTML flow)
+    // OTP flow is handled inline in index.html
     if (registerForm.dataset.otpFlow === "1") return;
 
     registerForm.dataset.bound = "1";
@@ -93,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
           phone: mobile,
           password: passwordInput.value,
         });
-        window.location.href = "index.html";
+        window.location.href = "home.html";
       } catch (error) {
         alert(error.message || "Signup failed");
       }
